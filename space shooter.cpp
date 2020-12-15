@@ -54,18 +54,17 @@ public:
 
 
 
-
-
-
-
-
-
-
 int main()
+//summary: 
+//1.Create list of bullets, list of asteroids, a spaceship; 
+//2. In while loop, 
+// A)get kb input to shoot, 
+// B)check if any object collides or out of boundary, 
+// C) get kb input to move the ship.
 {
 HideCursor();
 WelcomeMessage();
-getch();
+getch();//press any key to start
 DrawGameLimits();
 
 list<Bullet*> Bullets; // We will use a dynamic list for the bullets in the game
@@ -98,12 +97,12 @@ while(!ss.isDead() && score != 100) // If you die or reach 100 points the game e
     if((*bullet)->isOut())
     { // If the bullet reached the end of the map
       delete(*bullet); // It gets deleted
-      bullet = Bullets.erase(bullet);
+      bullet = Bullets.erase(bullet);//list::erase() returns an iterator pointing to the element that followed the last element erased by the function call.
     }
   }
   for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
   { // Every asteroid checks if the spaceship shares it's coordinates :3
-    (*asteroid)->Collision(ss);
+    (*asteroid)->Collision(ss);//if collide with ship, cause damage to the ship and respawn an asteroid on the top; if not collide, move downward
   }
   for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
   {
@@ -119,7 +118,8 @@ while(!ss.isDead() && score != 100) // If you die or reach 100 points the game e
         gotoxy(astX,astY); printf("X"); printf(" "); // I still have my doubts in this part, but it tries to signal a collision, sometimes the X remains theme...
         delete(*bullet); // You delete the bullet
         bullet = Bullets.erase(bullet);
-        delete(*asteroid);// And the asteroid
+        //list::erase() returns an iterator pointing to the element that followed the last element erased by the function call.
+        delete(*asteroid);// And delete the asteroid
         asteroid = Asteroids.erase(asteroid);
         Asteroids.push_back(new Asteroid(rand()%78 + 1, rand()%4 + 3)); // in order to not reduce the number of asteroids I add one everytime one is destroyed
         score += 10; // And you get 10 points for a job well done :3
