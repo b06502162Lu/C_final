@@ -15,7 +15,8 @@ using namespace std;
 #define UP    72 // arrow keys' ascii numbers
 #define LEFT  75
 #define RIGHT 77
-#define DOWN  80
+#define DOWN  80//80808080808080808
+
 
 class Bullet
 {
