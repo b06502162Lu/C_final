@@ -1,8 +1,7 @@
-#include <stdlib.h> //Standard c and c++ libraries
 #include <conio.h>
 #include <stdio.h>
 #include <windows.h> // To take control over the terminal
-#include <list>
+
 using namespace std;
 
 class Asteroid

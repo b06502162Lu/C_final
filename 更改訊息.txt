@@ -1,0 +1,5 @@
+1.把程式整理得整齊一點
+2.把class bullet從main.cpp分出來成bullet.h
+3.main.cpp加了中文註解(還有一小部分沒改成中文)
+4.enemy.h
+5.bullet.h新增斜射功能

@@ -1,7 +1,6 @@
-#include <stdlib.h> //Standard c and c++ libraries
-#include <conio.h>
+#include <conio.h>//kbhit()
 #include <stdio.h>
-#include <windows.h> // To take control over the terminal
+#include <windows.h> // To take control over the terminal //Sleep()
 #include <list>
 #ifndef SPACE_SHIP
 #define SPACE_SHIP

@@ -2,8 +2,8 @@ class SpaceShip{
 private:
 	int x; // x coordinate
 	int y; // y coordinate
-	int hp; // heart points
-	int energy; // energy points
+	int hp; // 幾條命 
+	int energy; // 一條命幾滴血
 	bool imDead; // is the ship dead?
 	
 public:
