@@ -65,7 +65,7 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   }
   
   for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
-  { // list中每個小行星確認是否撞到玩家飛機
+  { // list中每個小行星確認是否出界、撞到玩家飛機，否則下降 
     (*asteroid)->Collision(ss);//Collision()的功能是，對玩家飛機造成傷害並重生(重生要改掉)，或往下動一格 
   }
   

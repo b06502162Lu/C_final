@@ -5,16 +5,25 @@
 #endif
 class Bullet
 {
+	enum bullettype{bleft,bstraight,bright};
 private:
   int x;
   int y;
+  bullettype type;
 public:
   int X()  { return x; }
   int Y()  { return y; }
-  Bullet(int _x, int _y)
+  Bullet(int _x, int _y)//不指定子彈的方向，預設為直的子彈 
   {
     x = _x;
     y = _y;
+    type=bstraight;
+  }
+  Bullet(int _x, int _y,bullettype t)//指定方向的子彈 
+  {
+    x = _x;
+    y = _y;
+    type=t;
   }
   
   bool isOut()
@@ -30,23 +39,23 @@ public:
     }
   }
   
-  void Move()//走直線 
+  void Move()
   {
-    gotoxy(x,y); printf(" ");
-    y--;
-    gotoxy(x,y); printf("."); // 子彈的圖案是"." 
-  }
-  void lMove()//走對角線(左)
-  {
-  	gotoxy(x,y); printf(" ");
-  	x--;y--;
-  	gotoxy(x,y); printf(".");
-  }
-  void rMove()//走對角線(右) 
-  {
-  	gotoxy(x,y); printf(" ");
-  	x++;y--;
-  	gotoxy(x,y); printf(".");
+  	if(type==1){//走直線 
+  		gotoxy(x,y); printf(" ");
+    	y--;
+    	gotoxy(x,y); printf("."); // 子彈的圖案是"." 
+	}
+    else if(type==0){//走對角線(左)
+    	gotoxy(x,y); printf(" ");
+  		x--;y--;
+  		gotoxy(x,y); printf(".");
+	}
+	else if(type==2){//走對角線(右)
+		gotoxy(x,y); printf(" ");
+  		x++;y--;
+  		gotoxy(x,y); printf(".");
+	}
   }
    
 };

@@ -6,18 +6,27 @@ using namespace std;
 
 class Asteroid
 {
+	enum astertype{aleft,astraight,aright};
 private:
 	int x;
 	int y;
+	astertype type; 
 		
 public:
 	int X()  { return x; }
 	int Y()  { return y; }
 
-	Asteroid(int _x, int _y)
+	Asteroid(int _x, int _y)//不指定方向 預設直的 
 	{
 		x = _x;
 		y = _y;
+		type=astraight;	
+	}
+	Asteroid(int _x, int _y,astertype t)//指定方向的asteriod 
+	{
+		x = _x;
+		y = _y;
+		type=t;	
 	}
 	
 	void Draw()
@@ -37,8 +46,10 @@ public:
 		else
 		{
 			gotoxy(x,y); printf(" ");
-			y++;
-			if(y > 22)
+			if(type==astraight){y++;}
+			else if(type==aleft){y++;x--;}
+			else if(type==aright){y++;x++;}
+			if(y > 22||x<2||x>78)
 			{ // If the asteroid goes too down in the map
 				x = rand()%74 + 3; // It will be teleported to the top
 				y = 4;
