@@ -65,6 +65,7 @@ void DrawGameLimits()
 	DrawWindowFrame(1,2,79,23); // The default size of the Windows terminal is 25 rows x 80 columns
 	gotoxy( 2,1); printf("HP:");
 	gotoxy(16,1); printf("ENERGY:");
+	gotoxy(35,1); printf("BOMB:");
 	gotoxy(50,1); printf("SCORE:");
 }
 void WelcomeMessage()
@@ -107,4 +108,13 @@ void SpecialMessage()
 { // A special message for your special needs
 	DrawWhiteSpace(1,1,80,24);
 	gotoxy(30,11); printf("Thanks for playing! :3");
+}
+void BoomEffect()
+{//Boom Effect
+	int x = 13;
+	int y = 6;
+	gotoxy(x, y  ); printf("                 |                                      ");
+	gotoxy(x, y+1); printf("                 |___ ___ ___ _ _                       ");
+	gotoxy(x, y+2); printf("                 | . | . | . | | |                      ");
+	gotoxy(x, y+3); printf("                 |___|___|___| | |                      ");
 }

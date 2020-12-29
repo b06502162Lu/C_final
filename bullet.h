@@ -17,7 +17,7 @@ public:
   {
     x = _x;
     y = _y;
-    type=bstraight;
+    type=bleft;
   }
   Bullet(int _x, int _y,bullettype t)//指定方向的子彈 
   {
@@ -57,5 +57,9 @@ public:
   		gotoxy(x,y); printf(".");
 	}
   }
-   
+  
+  //void Collision(enemy&ee) 
+  //{
+  	
+  //}
 };

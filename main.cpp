@@ -11,6 +11,8 @@
 #include "space ship.h"
 #include "asteroid.h"
 #include "enemy.h"
+#include "bomb.h"
+#include "Health.h"
 using namespace std;
 #define UP    72 // 方向鑑的Ascii 
 #define LEFT  75
@@ -24,6 +26,7 @@ int main()
 // B)檢查物件是否碰撞或出界
 // C)檢查輸入的飛船移動訊號
 {
+
 HideCursor();//隱藏cursor 
 WelcomeMessage();//歡迎畫面 
 getch();//任意鍵開始 
@@ -34,10 +37,30 @@ list<Bullet*>::iterator bullet;
 
 list<Asteroid*> Asteroids; //敵方子彈也一樣用list紀錄
 list<Asteroid*>::iterator asteroid;
- 
-for(int i = 0; i < 10; i++) // 用dynamic的方式加入一顆下降的小行星到list 
-{ 
-  Asteroids.push_back(new Asteroid(rand()%78 + 1, rand()%4 + 3));
+
+list<Enemy*> Enemies;
+list<Enemy*>::iterator enemy;
+
+list<Bomb*> Bombs; //list of the bomb
+list<Bomb*>::iterator bomb;
+
+list<Health*> Healths; //list of the power
+list<Health*>::iterator health;
+
+Enemies.push_back(new Enemy(40,4,50,boss));
+
+//for(int i = 0; i < 10; i++) // 用dynamic的方式加入一顆下降的小行星到list 
+//{ 
+//  Asteroids.push_back(new Asteroid(rand()%78 + 1, rand()%4 + 3));
+//}
+for(int i = 0; i < 3; i++) // build a new bomb
+{
+	Bombs.push_back(new Bomb(rand()%78 + 1, rand()%4 + 3));
+}
+  
+for(int i = 0; i < 3; i++) // build a new power
+{
+	Healths.push_back(new Health(rand()%78 + 1, rand()%4 + 3));
 }
   
 SpaceShip ss = SpaceShip(40,20); // 創建並初始化玩家控制的飛機
@@ -53,7 +76,10 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
       Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
     }
   }//讀取發射指令結束 
-  
+  for(enemy = Enemies.begin(); enemy != Enemies.end(); enemy++)
+  {
+  	(*enemy)->move();
+  }
   for(bullet = Bullets.begin(); bullet != Bullets.end(); bullet++)//讓list中每顆子彈移動一格 
   { 
     (*bullet)->Move();//向上移動 
@@ -69,7 +95,25 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
     (*asteroid)->Collision(ss);//Collision()的功能是，對玩家飛機造成傷害並重生(重生要改掉)，或往下動一格 
   }
   
-  for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
+  for(bomb = Bombs.begin(); bomb != Bombs.end(); bomb++)
+  { 
+    (*bomb)->Collision(ss);//bomb's collision
+    if((*bomb)->Y() == 23){
+    	delete((*bomb)) ;
+    	bomb = Bombs.erase(bomb) ;
+	}
+  }
+  
+  for(health = Healths.begin(); health != Healths.end(); health++)
+  { 
+    (*health)->Collision(ss);//power's collision
+    if((*health)->Y() == 23){
+    	delete((*health)) ;
+    	health = Healths.erase(health) ;
+	}
+  }
+  
+  /*for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++) 
   {
     for(bullet = Bullets.begin(); bullet != Bullets.end(); bullet++)
     { // asteroid-bullet collision
@@ -90,8 +134,9 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
         score += 10; // And you get 10 points for a job well done :3
       }
     }
-  }
+  }*/
   ss.Move();
+  //ss.usebomb();// press'b' then use bomb
   gotoxy(56,1); printf("%d", score);
   Sleep(30); // This is essential, otherwise the game would be unplayable
 }//end while

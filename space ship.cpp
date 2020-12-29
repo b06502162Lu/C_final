@@ -23,13 +23,14 @@ using namespace std;
 	{
 		x = _x;
 		y = _y;
-		hp = 3; // I designed the game to have 3 lifes
-		energy = 5; // And 5 energy points every life
-		imDead = false; // By default you are not dead
+		hp = 3;
+		energy = 5; 
+		bomb = 0; //bomb
+		imDead = false; 
 	}
 	
 	void SpaceShip::DrawSpaceShipInfo()
-	{ // Displays HP and energy points, I aligned them with the labels printed in DrawGameLimits
+	{ 
 		gotoxy(5, 1); printf("     ");
 		for(int i = 0; i < hp; i++)
 		{
@@ -40,11 +41,16 @@ using namespace std;
 		{
 			gotoxy(23 + i, 1); printf("%c", 64);
 		}
+		gotoxy(40, 1); printf("     "); // display spaceship have how many bomb
+		for(int i = 0; i < bomb; i++)
+		{
+			gotoxy(40 + i, 1); printf("%c", 64);
+		}
 	}
 	
 	void SpaceShip::Draw()
 	{ // This is our spaceship
-		gotoxy(x,y);     printf( "  %c  ", 168 );
+		gotoxy(x,y);     printf( "  %c  ", 65 );
 		gotoxy(x,y + 1); printf( "  %c  ", 65);
 		gotoxy(x,y + 2); printf("%c%c%c%c%c",65, 65, 65, 65, 65);
 	}
@@ -71,14 +77,6 @@ using namespace std;
 			gotoxy(x,y + 2); printf("*****");
 			Sleep(100);
 		}
-	}
-	void SpaceShip::get_power(){
-		if(state == 2){
-			return ;
-		}
-		state ++ ;
-		return ;
-		// 陸亮宇 12/29
 	}
 	void SpaceShip::Explosion()
 	{ // When you lose a heart :c
@@ -120,7 +118,40 @@ using namespace std;
 				case RIGHT: if(x + 4 < 77) x += 1; break;
 				case UP:    if(y > 3)      y -= 1; break;
 				case DOWN:  if(y + 2 < 22) y += 1; break;
+				case 'b':
+				case 'B':if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
 			}
 		}
 		Draw(); // The spaceship is drawn regardless if you moved it or not, if you did then it will appear in it's new position.
+	}
+	void SpaceShip::gethealth()//when spaceship get health then hp++
+	{
+		hp++;
+		gotoxy(x,y);     printf("  +  ");//when spaceship get health have effect
+		gotoxy(x,y + 1); printf("  +  ");
+		gotoxy(x,y + 2); printf("+++++");
+		Sleep(100);
+		Draw();
+	}
+	//void SpaceShip::usebomb()//using bomb then press 'b'
+	//{
+		//if(kbhit())
+		//{
+		//	char key = getch();
+		//	switch(key)
+		//	{
+		//		case 'b': if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
+		//		case 'B': if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
+		//	}
+		//}
+	//}
+	void SpaceShip::getBomb()//when bomb collision the spaceship then bomb increase
+	{
+		if(bomb < 2)
+		{
+			bomb++;
+			Erase();//when get bomb have a effect
+			Sleep(50);
+			Draw();
+		}
 	}
