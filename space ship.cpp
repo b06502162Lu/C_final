@@ -72,6 +72,14 @@ using namespace std;
 			Sleep(100);
 		}
 	}
+	void SpaceShip::get_power(){
+		if(state == 2){
+			return ;
+		}
+		state ++ ;
+		return ;
+		// 陸亮宇 12/29
+	}
 	void SpaceShip::Explosion()
 	{ // When you lose a heart :c
 		hp--;
