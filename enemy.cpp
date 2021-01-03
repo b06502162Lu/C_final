@@ -2,6 +2,7 @@
 #define ENEMY
 #include"enemy.h"
 #include"drawing.h"
+
 #endif
 #include<stdio.h>
 #include<windows.h>
@@ -103,7 +104,7 @@ void Enemy::umove(){
 
 void Enemy::move()
 {
-	int bosshp=100;
+	
 	if(t!=boss)
 	{
 		static int m=0;
@@ -160,9 +161,20 @@ void Enemy::move()
 	}
 }
 
+void Enemy::Animation_damage()
+{
+	erase();
+	gotoxy(x,y);     printf("*****");
+	gotoxy(x,y + 1); printf(" *** ");
+	gotoxy(x,y + 2); printf("  *  ");
+	Sleep(30);
+	erase();
+	draw();
+}
 void Enemy::Explosion()
 {
 	Enemy::erase();
+
 	gotoxy(x,y);     printf("*****");
 	gotoxy(x,y + 1); printf("  *  ");
 	gotoxy(x,y + 2); printf("  *  ");
@@ -172,18 +184,16 @@ void Enemy::Explosion()
 	gotoxy(x,y + 1); printf("* * *");
 	gotoxy(x,y + 2); printf(" * * ");
 	Sleep(50);
-	Enemy::erase();
-	gotoxy(x,y);     printf("* * *");
-	gotoxy(x,y + 1); printf(" * * ");
-	gotoxy(x,y + 2); printf("*   *");
-	Sleep(50);
+	
 }
 void Enemy::Damage(int damagehp){
 	hp-=damagehp;
+	Animation_damage();
 	if(hp<=0)
 	{
 		imDead=true;//¦bmain¸Ì¼gdamge();if(enemy.imDead){delete} 
 		Explosion();
+		erase();
 	}
 }
  

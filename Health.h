@@ -41,7 +41,7 @@ public:
 			ss.gethealth(); // get thealth
 			gotoxy(x,y); printf(" "); // And the health is "destroyed"
 			x = rand()%74 + 3; // The truth is it just teleports to the top of the map
-			y = 4;
+			y = 28;
 		}
 		else
 		{

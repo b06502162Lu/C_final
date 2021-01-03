@@ -18,6 +18,7 @@ using namespace std;
 #define LEFT  75
 #define RIGHT 77
 #define DOWN  80
+
 int main()
 //概要
 //1.宣告遊戲物件，有的用list如:子彈、敵人子彈
@@ -47,13 +48,8 @@ list<Bomb*>::iterator bomb;
 list<Health*> Healths; //list of the power
 list<Health*>::iterator health;
 
-Enemies.push_back(new Enemy(40,4,50,boss));
 
-//for(int i = 0; i < 10; i++) // 用dynamic的方式加入一顆下降的小行星到list 
-//{ 
-//  Asteroids.push_back(new Asteroid(rand()%78 + 1, rand()%4 + 3));
-//}
-for(int i = 0; i < 3; i++) // build a new bomb
+for(int i = 0; i < 3; i++) //build a new bomb
 {
 	Bombs.push_back(new Bomb(rand()%78 + 1, rand()%4 + 3));
 }
@@ -62,12 +58,42 @@ for(int i = 0; i < 3; i++) // build a new power
 {
 	Healths.push_back(new Health(rand()%78 + 1, rand()%4 + 3));
 }
-  
 SpaceShip ss = SpaceShip(40,20); // 創建並初始化玩家控制的飛機
 int score = 0; // 分數score
-
-while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
+int count_t =0;
+bool done1=false,done2=false,done3=false,done4=false,done5=false,done6=false;
+while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
 {//endwhile處有Sleep()控制迴圈速度 (原為30) 
+  if(score==300&&done1==false)
+  {Enemies.push_back(new Enemy(40,4,50,e1));
+  done1=true;
+  }
+  if(score>100000&&done2==false)
+  {Enemies.push_back(new Enemy(40,4,50,e2));done2=true;
+  }
+  if(score>400000&&done3==false)
+  {
+  	Enemies.push_back(new Enemy(30,4,50,e1));
+  Enemies.push_back(new Enemy(50,4,50,e1));done3=true;
+  }
+  if(score>600000&&done4==false){
+  	Enemies.push_back(new Enemy(30,4,100,e2));
+  Enemies.push_back(new Enemy(50,4,100,e2));done4=true;
+  }
+  if(score>1200000&&done5==false){
+  	Enemies.push_back(new Enemy(20,4,50,e1));
+  Enemies.push_back(new Enemy(40,4,100,e2));
+  Enemies.push_back(new Enemy(60,4,50,e1));done5=true;
+  }
+  if(score>1700000&&done6==false){
+  	Enemies.push_back(new Enemy(40,4,200,boss));done6=true;
+  }
+  
+  
+  count_t++; 
+  if(count_t%5==0){
+  	score+=10;
+  }
   if(kbhit())//讀取發射指令，確認kbhit是為了不讓程式在getch()停下來等待輸入 
   {
     char key = getch();
@@ -75,30 +101,89 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
     { // 空白鍵發射
       Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
     }
+    if(key == 'b'||key == 'B')
+    { // 空白鍵發射
+      ss.usebomb();
+      for(enemy = Enemies.begin(); enemy != Enemies.end(); enemy++){
+      	(*enemy)->Damage(9999);
+      	
+	  }
+    }
   }//讀取發射指令結束 
+  
+  //敵人發射子彈
+  if(count_t%16==1)
   for(enemy = Enemies.begin(); enemy != Enemies.end(); enemy++)
   {
-  	(*enemy)->move();
+  	if((*enemy)->type()==e1&&(*enemy)->HP()>0)//HP>0防BUG 可以不加 
+	  {
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2));
+	  }
+	if((*enemy)->type()==e2&&(*enemy)->HP()>0)
+	  {
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2,aleft));
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2,aright));
+	  }
+	if((*enemy)->type()==boss&&(*enemy)->HP()>0)
+	  {
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2,aleft));
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2));
+  		Asteroids.push_back(new Asteroid((*enemy)->X() + 2, (*enemy)->Y() + 2,aright));
+	  }
   }
+  //敵人移動 
+  if(count_t%2==1)
+  for(enemy = Enemies.begin(); enemy != Enemies.end(); enemy++)
+  {
+  	if((*enemy)->HP()>0)
+  	(*enemy)->move();
+  	if((*enemy)->isDead()){
+  		if((*enemy)->type()==e1)
+  		score+=100000;
+  		else if((*enemy)->type()==e2)
+  		score+=300000;
+  		else if((*enemy)->type()==boss)
+  		score=999999999;
+  		(*enemy)->erase();
+  		delete(*enemy); // 從list清除這顆子彈，記憶體還給電腦
+      	enemy = Enemies.erase(enemy);
+      	
+	  }
+  }
+  
+  //子彈打敵人 
   for(bullet = Bullets.begin(); bullet != Bullets.end(); bullet++)//讓list中每顆子彈移動一格 
   { 
-    (*bullet)->Move();//向上移動 
+  	bool needmove=true;
+    for(enemy = Enemies.begin(); enemy != Enemies.end(); enemy++){
+    if((*bullet)->Collision((*enemy)->X(),(*enemy)->Y())){
+    	(**enemy).Damage(5);
+    	needmove=false;
+	}//向上移動 
+	}
+	
+	if(needmove)
+    (*bullet)->Move();
     if((*bullet)->isOut())
     { // 如果子彈出界
       delete(*bullet); // 從list清除這顆子彈，記憶體還給電腦
-      bullet = Bullets.erase(bullet);//讓bullet指向原位置 (指向被消除的element的原本下一個element) 
-    }//我感覺原作者這裡寫錯，應該要bullet = --Bullets.erase(bullet);
+      bullet = Bullets.erase(bullet);
+    }
   }
+  
   
   for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
   { // list中每個小行星確認是否出界、撞到玩家飛機，否則下降 
-    (*asteroid)->Collision(ss);//Collision()的功能是，對玩家飛機造成傷害並重生(重生要改掉)，或往下動一格 
+    (*asteroid)->Collision(ss);//Collision()的功能是，對飛機造成傷害，或動一格 
+    if((*asteroid)->Y() >= 23||(*asteroid)->X() <= 2||(*asteroid)->X() >= 78){
+    	delete((*asteroid)) ;
+    	asteroid = Asteroids.erase(asteroid) ;
+	}
   }
-  
   for(bomb = Bombs.begin(); bomb != Bombs.end(); bomb++)
   { 
     (*bomb)->Collision(ss);//bomb's collision
-    if((*bomb)->Y() == 23){
+    if((*bomb)->Y() >= 23){
     	delete((*bomb)) ;
     	bomb = Bombs.erase(bomb) ;
 	}
@@ -107,7 +192,7 @@ while(!ss.isDead() && score != 10000) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   for(health = Healths.begin(); health != Healths.end(); health++)
   { 
     (*health)->Collision(ss);//power's collision
-    if((*health)->Y() == 23){
+    if((*health)->Y() >= 23){
     	delete((*health)) ;
     	health = Healths.erase(health) ;
 	}
@@ -155,3 +240,4 @@ SpecialMessage(); // Surprise
 Sleep(5000);
 return 0;
 }
+

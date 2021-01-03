@@ -28,7 +28,7 @@ public:
 	
 	void getBomb();//get boom
 	
-	//void usebomb();//use boom
+	void usebomb();//use boom
 	
 	void gethealth();//get health
 	

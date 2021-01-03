@@ -12,6 +12,8 @@ using namespace std;
 #define LEFT  75
 #define RIGHT 77
 #define DOWN  80
+#define BOOM  66
+#define BOOMM  98
 
 	bool SpaceShip::isDead()
 	{
@@ -118,8 +120,7 @@ using namespace std;
 				case RIGHT: if(x + 4 < 77) x += 1; break;
 				case UP:    if(y > 3)      y -= 1; break;
 				case DOWN:  if(y + 2 < 22) y += 1; break;
-				case 'b':
-				case 'B':if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
+				
 			}
 		}
 		Draw(); // The spaceship is drawn regardless if you moved it or not, if you did then it will appear in it's new position.
@@ -133,18 +134,13 @@ using namespace std;
 		Sleep(100);
 		Draw();
 	}
-	//void SpaceShip::usebomb()//using bomb then press 'b'
-	//{
-		//if(kbhit())
-		//{
-		//	char key = getch();
-		//	switch(key)
-		//	{
-		//		case 'b': if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
-		//		case 'B': if(bomb > 0) {bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits(); break;}
-		//	}
-		//}
-	//}
+	void SpaceShip::usebomb()//using bomb then press 'b'
+	{
+		if(bomb>0)
+		{
+			bomb -= 1; BoomEffect(); Sleep(100); DrawGameLimits();
+		}
+	}
 	void SpaceShip::getBomb()//when bomb collision the spaceship then bomb increase
 	{
 		if(bomb < 2)

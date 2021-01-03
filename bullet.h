@@ -2,10 +2,14 @@
 #define BULLET
 #include"drawing.h"
 #include"stdio.h"
+
+
 #endif
+enum bullettype{bleft,bstraight,bright};
+
 class Bullet
 {
-	enum bullettype{bleft,bstraight,bright};
+
 private:
   int x;
   int y;
@@ -28,7 +32,7 @@ public:
   
   bool isOut()
   {
-    if(y <= 3)
+    if(y <= 3||x<2||x>78)
     { // 如果子彈碰到畫面頂端 
       gotoxy(x,y); printf(" "); // 子彈就消失
       return true; // 告訴程式子彈出界
@@ -41,25 +45,37 @@ public:
   
   void Move()
   {
-  	if(type==1){//走直線 
-  		gotoxy(x,y); printf(" ");
-    	y--;
-    	gotoxy(x,y); printf("."); // 子彈的圖案是"." 
-	}
-    else if(type==0){//走對角線(左)
-    	gotoxy(x,y); printf(" ");
-  		x--;y--;
-  		gotoxy(x,y); printf(".");
-	}
-	else if(type==2){//走對角線(右)
-		gotoxy(x,y); printf(" ");
-  		x++;y--;
-  		gotoxy(x,y); printf(".");
-	}
+  			gotoxy(x,y); printf(" ");
+			if(type==bstraight){y--;}
+			else if(type==bleft){y--;x--;}
+			else if(type==bright){y--;x++;}
+			gotoxy(x,y); printf(".");
   }
   
-  //void Collision(enemy&ee) 
-  //{
-  	
-  //}
+  bool Collision(int X,int Y) 
+  {
+  	if (x >= X && (x <= X + 5) && ((y >= Y && (y <= Y + 2))))
+		{ 
+			
+			gotoxy(x,y); printf(" "); 
+
+			y = -1;
+			return true;
+		}
+		else
+		{
+			/*gotoxy(x,y); printf(" ");
+			if(type==bstraight){y--;}
+			else if(type==bleft){y--;x--;}
+			else if(type==bright){y--;x++;}
+			gotoxy(x,y); printf(".");*/
+			/*if(y > 22||x<2||x>78)
+			{ // If the asteroid goes too down in the map
+				x = rand()%74 + 3; // It will be teleported to the top
+				y = 4;
+			}*/
+			
+			return false;
+		}
+  }
 };

@@ -3,10 +3,10 @@
 #include <windows.h> // To take control over the terminal
 
 using namespace std;
-
+enum astertype{aleft,astraight,aright};
 class Asteroid
 {
-	enum astertype{aleft,astraight,aright};
+	
 private:
 	int x;
 	int y;
@@ -20,7 +20,7 @@ public:
 	{
 		x = _x;
 		y = _y;
-		type=aleft;	
+		type=astraight;	
 	}
 	Asteroid(int _x, int _y,astertype t)//指定方向的asteriod 
 	{
@@ -41,7 +41,7 @@ public:
 			ss.Damage(); // The asteroid hurts
 			gotoxy(x,y); printf(" "); // And the asteroid is "destroyed"
 			x = rand()%74 + 3; // The truth is it just teleports to the top of the map
-			y = 4;
+			y = 28;
 		}
 		else
 		{
@@ -49,11 +49,11 @@ public:
 			if(type==astraight){y++;}
 			else if(type==aleft){y++;x--;}
 			else if(type==aright){y++;x++;}
-			if(y > 22||x<2||x>78)
+			/*if(y > 22||x<2||x>78)
 			{ // If the asteroid goes too down in the map
 				x = rand()%74 + 3; // It will be teleported to the top
 				y = 4;
-			}
+			}*/
 			Draw();
 		}
 	}

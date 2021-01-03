@@ -1,0 +1,10 @@
+1.敵人可以正常工作並加入傷害動畫
+
+2.吃到道具或小行星，道具會重生的Bug修正
+
+3.bullet.h collision()//collision的argument不像其他class的collision一樣有pass飛機進來 因為會有bug不知為何
+
+
+4.bullet 檢查撞到敵人
+
+5.可按B了
