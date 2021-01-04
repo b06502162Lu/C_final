@@ -21,13 +21,28 @@ public:
   {
     x = _x;
     y = _y;
-    type=bleft;
+    type=bstraight;
   }
-  Bullet(int _x, int _y,bullettype t)//指定方向的子彈 
+  /*Bullet(int _x, int _y,bullettype t)//指定方向的子彈 
   {
     x = _x;
     y = _y;
     type=t;
+  }
+  */
+  Bullet(int _x, int _y,char t)//指定方向的子彈 
+  {
+    x = _x;
+    y = _y;
+    if(t == 'L'){
+    	type = bleft;
+	}
+	if(t == 'S'){
+		type = bstraight;
+	}
+	if(t == 'R'){
+		type = bright;
+	}
   }
   
   bool isOut()

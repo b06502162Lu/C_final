@@ -5,9 +5,11 @@ private:
 	int hp;
 	int energy; 
 	int bomb;
+	
 	bool imDead; 
 	
 public:
+	int state;
 	int X()  { return x; }
 	int Y()  { return y; }
 	int HP() { return hp; }
@@ -31,6 +33,8 @@ public:
 	void usebomb();//use boom
 	
 	void gethealth();//get health
+	
+	void getpower();
 	
 	void Move();
 	

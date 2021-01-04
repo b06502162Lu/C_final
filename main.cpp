@@ -5,7 +5,9 @@
 *
 */
 #include <stdio.h>
+#include <cstdlib>
 #include <list>
+#include <ctime>
 #include "bullet.h" 
 #include "drawing.h" 
 #include "space ship.h"
@@ -13,6 +15,7 @@
 #include "enemy.h"
 #include "bomb.h"
 #include "Health.h"
+#include "Power.h"
 using namespace std;
 #define UP    72 // 方向鑑的Ascii 
 #define LEFT  75
@@ -27,7 +30,7 @@ int main()
 // B)檢查物件是否碰撞或出界
 // C)檢查輸入的飛船移動訊號
 {
-
+srand(time(0));
 HideCursor();//隱藏cursor 
 WelcomeMessage();//歡迎畫面 
 getch();//任意鍵開始 
@@ -45,11 +48,14 @@ list<Enemy*>::iterator enemy;
 list<Bomb*> Bombs; //list of the bomb
 list<Bomb*>::iterator bomb;
 
-list<Health*> Healths; //list of the power
+list<Health*> Healths; //list of the health
 list<Health*>::iterator health;
 
+list<Power*> Powers; //list of the Power
+list<Power*>::iterator power;
 
-for(int i = 0; i < 3; i++) //build a new bomb
+
+/*for(int i = 0; i < 3; i++) //build a new bomb
 {
 	Bombs.push_back(new Bomb(rand()%78 + 1, rand()%4 + 3));
 }
@@ -58,6 +64,7 @@ for(int i = 0; i < 3; i++) // build a new power
 {
 	Healths.push_back(new Health(rand()%78 + 1, rand()%4 + 3));
 }
+*/
 SpaceShip ss = SpaceShip(40,20); // 創建並初始化玩家控制的飛機
 int score = 0; // 分數score
 int count_t =0;
@@ -94,12 +101,38 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   if(count_t%5==0){
   	score+=10;
   }
+  
+  if(count_t%99 == 0){
+  	Bombs.push_back(new Bomb(rand()%78 + 1, rand()%4 + 3));
+  }
+  if (count_t%43 == 0){
+  	Healths.push_back(new Health(rand()%78 + 1, rand()%4 + 3));
+  }
+  if(count_t%50 == 0){
+  	Powers.push_back(new Power(rand()%78 + 1, rand()%4 + 3));
+  }
+  
   if(kbhit())//讀取發射指令，確認kbhit是為了不讓程式在getch()停下來等待輸入 
   {
     char key = getch();
     if(key == ' ')
     { // 空白鍵發射
-      Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+    	if(ss.state == 0){
+    		Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+		}
+		if(ss.state == 1){
+			Bullets.push_back(new Bullet(ss.X() + 1, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+			Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+			Bullets.push_back(new Bullet(ss.X() + 3, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+		}
+		if(ss.state == 2){
+			Bullets.push_back(new Bullet(ss.X()    , ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+			Bullets.push_back(new Bullet(ss.X() + 1, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+			Bullets.push_back(new Bullet(ss.X() + 2, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+			Bullets.push_back(new Bullet(ss.X() + 3, ss.Y() - 1));//dynamic的方式在list加入一顆子彈
+			Bullets.push_back(new Bullet(ss.X() + 4, ss.Y() - 1));//dynamic的方式在list加入一顆子彈 
+		}
+      
     }
     if(key == 'b'||key == 'B')
     { // 空白鍵發射
@@ -195,6 +228,15 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
     if((*health)->Y() >= 23){
     	delete((*health)) ;
     	health = Healths.erase(health) ;
+	}
+  }
+  
+  for(power = Powers.begin(); power != Powers.end(); power++)
+  { 
+    (*power)->Collision(ss);//power's collision
+    if((*power)->Y() >= 23){
+    	delete((*power)) ;
+    	power = Powers.erase(power) ;
 	}
   }
   

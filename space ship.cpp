@@ -28,6 +28,7 @@ using namespace std;
 		hp = 3;
 		energy = 5; 
 		bomb = 0; //bomb
+		state = 0;
 		imDead = false; 
 	}
 	
@@ -67,6 +68,9 @@ using namespace std;
 	void SpaceShip::Damage()
 	{ // Triggered by the asteroids that hit the spaceship
 		energy--;
+		if(state > 0){
+			state -- ;
+		}
 		if(energy == 0)
 		{
 			Explosion();
@@ -133,6 +137,24 @@ using namespace std;
 		gotoxy(x,y + 2); printf("+++++");
 		Sleep(100);
 		Draw();
+	}
+	void SpaceShip::getpower()//when spaceship get health then hp++
+	{
+		if(state == 2){
+			gotoxy(x,y);     printf("  +  ");//when spaceship get health have effect
+			gotoxy(x,y + 1); printf("  +  ");
+			gotoxy(x,y + 2); printf("+++++");
+			Sleep(100);
+			Draw();
+		}
+		else{
+			state++ ;
+			gotoxy(x,y);     printf("  +  ");//when spaceship get health have effect
+			gotoxy(x,y + 1); printf("  +  ");
+			gotoxy(x,y + 2); printf("+++++");
+			Sleep(100);
+			Draw();
+		}
 	}
 	void SpaceShip::usebomb()//using bomb then press 'b'
 	{
