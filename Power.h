@@ -31,6 +31,8 @@ public:
 	
 	void Draw()
 	{
+		x = rand()%74 + 3;
+		y = 28;
 		gotoxy(x,y); printf("P"); // Get the Power!!
 	}
 	

@@ -27,7 +27,7 @@ using namespace std;
 		y = _y;
 		hp = 3;
 		energy = 5; 
-		bomb = 0; //bomb
+		bomb = 6; //bomb
 		state = 0;
 		imDead = false; 
 	}

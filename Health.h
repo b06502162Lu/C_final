@@ -31,6 +31,8 @@ public:
 	
 	void Draw()
 	{
+		x = rand()%74 + 3;
+		y = 28;
 		gotoxy(x,y); printf("+"); // Get the health!!
 	}
 	
@@ -49,7 +51,7 @@ public:
 			if(type==astraight){y++;}
 			else if(type==aleft){y++;x--;}
 			else if(type==aright){y++;x++;}
-		//	if(y > 22||x<2||x>78)
+		//	if(y > 22||x<2||x>78){gotoxy(x,y); printf(" ");}
 		//	{ // If the health goes too down in the map
 				//~Power() ;
 			//	x = rand()%74 + 3; // It will be teleported to the top

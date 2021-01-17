@@ -30,9 +30,8 @@ public:
 	
 	void Draw()
 	{
-		if(y<0){
-		return ;
-		}
+		x = rand()%74 + 3;
+		y = 28;
 		gotoxy(x,y); printf("B"); // Get the Bomb!!!
 	}
 	

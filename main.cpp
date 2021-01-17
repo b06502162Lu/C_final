@@ -208,7 +208,8 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   for(asteroid = Asteroids.begin(); asteroid != Asteroids.end(); asteroid++)
   { // list中每個小行星確認是否出界、撞到玩家飛機，否則下降 
     (*asteroid)->Collision(ss);//Collision()的功能是，對飛機造成傷害，或動一格 
-    if((*asteroid)->Y() >= 23||(*asteroid)->X() <= 2||(*asteroid)->X() >= 78){
+    if((*asteroid)->Y() >= 22||(*asteroid)->X() <= 2||(*asteroid)->X() >= 78){
+    	gotoxy((*asteroid)->X(),(*asteroid)->Y()); printf(" ");
     	delete((*asteroid)) ;
     	asteroid = Asteroids.erase(asteroid) ;
 	}
@@ -216,7 +217,8 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   for(bomb = Bombs.begin(); bomb != Bombs.end(); bomb++)
   { 
     (*bomb)->Collision(ss);//bomb's collision
-    if((*bomb)->Y() >= 23){
+    if((*bomb)->Y() >= 22){
+    	gotoxy((*bomb)->X(),(*bomb)->Y()); printf(" ");
     	delete((*bomb)) ;
     	bomb = Bombs.erase(bomb) ;
 	}
@@ -225,7 +227,8 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   for(health = Healths.begin(); health != Healths.end(); health++)
   { 
     (*health)->Collision(ss);//power's collision
-    if((*health)->Y() >= 23){
+    if((*health)->Y() >= 22){
+    	gotoxy((*health)->X(),(*health)->Y()); printf(" ");
     	delete((*health)) ;
     	health = Healths.erase(health) ;
 	}
@@ -234,7 +237,8 @@ while(!ss.isDead() && score <99999999) // 死掉或過關之前，遊戲都在這個迴圈裡進行
   for(power = Powers.begin(); power != Powers.end(); power++)
   { 
     (*power)->Collision(ss);//power's collision
-    if((*power)->Y() >= 23){
+    if((*power)->Y() >= 22){
+    	gotoxy((*power)->X(),(*power)->Y()); printf(" ");
     	delete((*power)) ;
     	power = Powers.erase(power) ;
 	}
